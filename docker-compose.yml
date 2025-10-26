@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./
+    env_file:
+      - .env
+    environment:
+      WEBAPP_ROOT_URL: http://localhost:8000
+    ports:
+      - 127.0.0.1:8000:80
+    volumes:
+      - ./src:/opt/app/src/
+      - ./libs:/opt/app/libs/
+      - ./pyproject.toml:/opt/app/pyproject.toml
+      - ./uv.lock:/opt/app/uv.lock
+    command: "fastapi dev main.py --port 80 --host 0.0.0.0"

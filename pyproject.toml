@@ -1,0 +1,89 @@
+[project]
+name = "show-project"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi[standard]>=0.120.0",
+    "httpx>=0.28.1",
+    "pydantic-settings>=2.11.0",
+]
+
+[tool.mypy]
+python_version = 3.12
+ignore_missing_imports = true
+disallow_untyped_defs = true
+plugins = [
+    "pydantic.mypy",
+]
+exclude = [
+    "migrations",
+]
+[tool.ruff]
+line-length = 120
+exclude = [
+    "migrations",
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 7
+
+[tool.ruff.lint.pylint]
+max-args = 6 # Максимальное кол-во аргументов функции
+max-branches = 10 # Максимальное кол-во ветвей if/else
+max-statements = 50 # Максимальное кол-во операторов в функции
+
+[tool.ruff.lint]
+preview = true # Enables experimental rules like E225
+select = [
+    "A", # flake8-builtins (переопределение встроенных имен)
+    "B", # flake8-bugbear -- опасные паттерны (использование x == None вместо x is None, и т.д.)
+    "C", # flake8-comprehensions (ненужный list(), ненужный dict())
+    "E", # Ошибки из pycodestyle (PEP 8)
+    "F", # Логические ошибки и потенциальные баги (неиспользуемый импорт, обращение к необъявленной переменной, и т.д.)
+    "I", # isort (сортировка импортов)
+    "W", # Предупреждения из pycodestyle (пробелы в конце строки, пустые строки, и т.д.)
+    "UP", # pyupgrade -- модернизация кода (замена type(x) == int на isinstance(x, int), и т.д.)
+    "PL", # Pylint правила (сложность функции, глобальные переменные)
+    "RET", # проверка return-ов
+    "COM", # Запятые
+]
+fixable = [
+    "E",
+    "F401",
+    "I",
+    "W",
+    "COM",
+]
+unfixable = [
+    "A",
+    "B",
+    "C",
+    "PL",
+    "RET",
+    "UP",
+]
+ignore = [
+    "RET501", # запрет на `return None` -- конфликт с mypy
+    "RET504", # лишнее определение переменной перед return
+    "B904", # Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None`
+    "UP031", # Use format specifiers instead of percent format
+    "PLR6301", # Method could be a function, class method, or static method
+    "PLC0415", # `import` should be at the top-level of a file
+    "B008", # Do not perform function call in argument defaults
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = ["F401"]
+"**/test*.py" = ["PLR2004", "PLR0913", "PLR0915", "C901"]
+
+[tool.ruff.lint.isort]
+known-first-party = []  # перечислить пакеты и отдельные модули для импортов
+force-single-line = false
+relative-imports-order = "closest-to-furthest"
+combine-as-imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
