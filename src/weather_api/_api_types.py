@@ -1,5 +1,4 @@
-from pydantic import ConfigDict, BaseModel, Field
-
+from pydantic import BaseModel, ConfigDict, Field
 
 response_config = ConfigDict(
     validate_default=True,

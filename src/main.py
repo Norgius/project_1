@@ -1,17 +1,12 @@
 import logging
 from contextlib import asynccontextmanager
 
-from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 from starlette import status
 
 from settings import env
-from weather_api import (
-    AsyncWeatherClient,
-    GetCurrentWeatherRequest,
-    WeatherResponse,
-    WeatherServiceError
-)
+from weather_api import AsyncWeatherClient, GetCurrentWeatherRequest, WeatherResponse, WeatherServiceError
 
 logger = logging.getLogger('__name__')
 

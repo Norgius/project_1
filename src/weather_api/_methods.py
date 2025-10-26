@@ -1,11 +1,12 @@
 
 from typing import Literal
+
 from httpx import HTTPStatusError, RequestError, TimeoutException
 from pydantic import BaseModel, ConfigDict
 
-from ._exceptions import WeatherServiceError
 from ._api_client import AsyncWeatherClient
 from ._api_types import WeatherResponse
+from ._exceptions import WeatherServiceError
 
 
 async def aget(request: BaseModel) -> bytes:
@@ -25,7 +26,7 @@ class GetCurrentWeatherRequest(BaseModel):
     lang: Literal['ru', 'en'] = 'ru'
 
     model_config = ConfigDict(
-        extra='forbid'
+        extra='forbid',
     )
 
     async def asend(self) -> WeatherResponse:
