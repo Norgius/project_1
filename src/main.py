@@ -1,7 +1,7 @@
 import logging
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException
 from pydantic import BaseModel
 from starlette import status
 
@@ -30,13 +30,12 @@ class WeatherError(BaseModel):
         responses={
             status.HTTP_200_OK: {'model': WeatherResponse},
             status.HTTP_400_BAD_REQUEST: {'model': WeatherError},
+            status.HTTP_422_UNPROCESSABLE_CONTENT: {'model': WeatherError},
         },
-        summary='Получить погоду по координатам, координаты временно замоканы',
+        summary='Погода по координатам',
 )
-async def get_weather() -> WeatherResponse:
+async def get_weather(request: GetCurrentWeatherRequest = Depends()) -> WeatherResponse:
     try:
-        # Временно для всех параметров класса GetCurrentWeatherRequest есть данные по-умолчанию
-        request = GetCurrentWeatherRequest()
         return await request.asend()
     except WeatherServiceError as e:
         logger.error(e)
