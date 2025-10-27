@@ -3,6 +3,7 @@ from pydantic import BaseModel, ConfigDict, Field
 response_config = ConfigDict(
     validate_default=True,
     extra="ignore",
+    use_attribute_docstrings=True,
 )
 
 
@@ -32,6 +33,8 @@ class WeatherMainData(BaseModel):
 class WeatherResponse(BaseModel):
     coord: Coordinates
     weather: list[WeatherDescription]
+    """Текстовое описание погоды"""
     main: WeatherMainData
+    """Числовые метеорологические значения"""
 
     model_config = response_config
