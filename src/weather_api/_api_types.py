@@ -33,8 +33,10 @@ class WeatherMainData(BaseModel):
 class WeatherResponse(BaseModel):
     coord: Coordinates
     weather: list[WeatherDescription]
-    """Текстовое описание погоды"""
+    """Текстовое описание погоды."""
     main: WeatherMainData
-    """Числовые метеорологические значения"""
+    """Числовые метеорологические значения."""
+    name: str
+    """Название города/населённого пункта."""
 
     model_config = response_config

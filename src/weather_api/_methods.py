@@ -24,7 +24,7 @@ def lan_coord_validator(coord: float):
 async def aget(request: BaseModel) -> bytes:
     client = AsyncWeatherClient.get_initialized_instance()
     async with WeatherServiceError.async_reraise_from(TimeoutException, HTTPStatusError, RequestError):
-        response = await client.get(request._endpoint, params=request.model_dump(exclude='endpoint'))
+        response = await client.get(request._endpoint, params=request.model_dump())
         response.raise_for_status()
 
     return response

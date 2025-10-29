@@ -20,10 +20,10 @@ class AsyncWeatherClient(httpx.AsyncClient):
 
     @classmethod
     @asynccontextmanager
-    async def setup(cls, api_key: SecretStr | str = '', *args: Any, **kwargs: Any) -> AsyncGenerator[None]:
+    async def setup(cls, api_key: SecretStr | str, *args: Any, **kwargs: Any) -> AsyncGenerator[None]:
         if isinstance(api_key, SecretStr):
             api_key = api_key.get_secret_value()
-        else:
+        if not api_key or not api_key.strip():
             raise ValueError(f'API_KEY for Weather Service is empty: {api_key}')
         cls._initialized_instance = cls(api_key, *args, **kwargs)
         async with cls._initialized_instance:

@@ -13,7 +13,7 @@ logger = logging.getLogger('__name__')
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    async with AsyncWeatherClient().setup(env.WEATHER_SERVICE.API_KEY):
+    async with AsyncWeatherClient().setup(env.WEATHER_SERVICE.API_KEY, timeout=3):
         yield
 
 
@@ -25,8 +25,9 @@ class WeatherError(BaseModel):
 
 
 @app.get(
-        '/',
+        '/weather',
         response_model=WeatherResponse,
+        response_model_by_alias=False,
         responses={
             status.HTTP_200_OK: {'model': WeatherResponse},
             status.HTTP_400_BAD_REQUEST: {'model': WeatherError},
@@ -36,7 +37,8 @@ class WeatherError(BaseModel):
 )
 async def get_weather(request: GetCurrentWeatherRequest = Depends()) -> WeatherResponse:
     try:
-        return await request.asend()
+        response = await request.asend()
+        return response
     except WeatherServiceError as e:
         logger.error(e)
         raise HTTPException(
